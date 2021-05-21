@@ -24,7 +24,7 @@ static const char MapUriStr[] = "http://lv2plug.in/ns/ext/urid#map";
 
 static void run(LV2_Handle instance, uint32_t sampleFrames)
 {
-	register MolotStereoLite *	plugin;
+	MolotStereoLite *	plugin;
 
 	if ((plugin = static_cast<MolotStereoLite *> (instance)))
 	{
@@ -52,7 +52,7 @@ static void cleanup(LV2_Handle instance)
 	{
 		// Get rid of the MolotStereoLite
 		{
-		register MolotStereoLite * plugin;
+		MolotStereoLite * plugin;
 
 		plugin = static_cast<MolotStereoLite *> (instance);
 		delete plugin;
@@ -73,7 +73,7 @@ static void cleanup(LV2_Handle instance)
 
 static LV2_Handle instantiate(const LV2_Descriptor * descriptor, double rate, const char * path, const LV2_Feature * const * features)
 {
-	register MolotStereoLite *	plugin;
+	MolotStereoLite *	plugin;
 
 	// Create an instance of MolotStereoLite (defined in Molot_Stereo_Lite.h)
 	plugin = new (std::nothrow) MolotStereoLite((double)rate);
@@ -101,7 +101,7 @@ static LV2_Handle instantiate(const LV2_Descriptor * descriptor, double rate, co
 
 static void activate(LV2_Handle instance)
 {
-	register MolotStereoLite *	plugin;
+	MolotStereoLite *	plugin;
 
 	if ((plugin = static_cast<MolotStereoLite *> (instance))) plugin->pluginActivate();
 }
@@ -119,7 +119,7 @@ static void activate(LV2_Handle instance)
 
 static void deActivate(LV2_Handle instance)
 {
-	register MolotStereoLite *	plugin;
+	MolotStereoLite *	plugin;
 
 	if ((plugin = static_cast<MolotStereoLite *> (instance))) plugin->pluginDeActivate();
 }
@@ -140,7 +140,7 @@ static void deActivate(LV2_Handle instance)
 
 static void connectPort(LV2_Handle instance, uint32_t port, void * hostData)
 {
-	register MolotStereoLite *	plugin;
+	MolotStereoLite *	plugin;
 
 	plugin = static_cast<MolotStereoLite *> (instance);
 	if (plugin && port < LV2_NUM_ALL_PORTS)
