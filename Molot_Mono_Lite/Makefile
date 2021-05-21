@@ -58,4 +58,4 @@ uninstall:
 	rm -rf $(INSTALL_DIR)/$(BUNDLE)
 
 clean:
-	rm -f *.o
+	rm -f *.o *.so
