@@ -1,0 +1,7 @@
+@prefix lv2: <http://lv2plug.in/ns/lv2core#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+<jeff:Molot_Stereo_Lite>
+ a lv2:Plugin, lv2:CompressorPlugin ;
+ lv2:binary <Molot_Stereo_Lite.so> ;
+ rdfs:seeAlso <Molot_Stereo_Lite.ttl> .

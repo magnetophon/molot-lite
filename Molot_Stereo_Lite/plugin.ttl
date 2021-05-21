@@ -1,0 +1,262 @@
+@prefix lv2: <http://lv2plug.in/ns/lv2core#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix doap: <http://usefulinc.com/ns/doap#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix unit: <http://lv2plug.in/ns/extensions/units#> .
+
+<jeff:Molot_Stereo_Lite>
+ a lv2:Plugin, lv2:CompressorPlugin ;
+ doap:name "Molot Stereo Lite" ;
+
+ lv2:optionalFeature lv2:hardRTCapable ;
+
+ lv2:requiredFeature <http://lv2plug.in/ns/ext/buf-size#boundedBlockLength> ,
+  <http://lv2plug.in/ns/ext/urid#map> ;
+
+ lv2:port [
+  a lv2:InputPort, lv2:AudioPort ;
+  lv2:index 0 ;
+  lv2:name "Audio In 1" ;
+  lv2:symbol "AUDIO_IN_1" ;
+ ] ,
+ [
+  a lv2:InputPort, lv2:AudioPort ;
+  lv2:index 1 ;
+  lv2:name "Audio In 2" ;
+  lv2:symbol "AUDIO_IN_2" ;
+ ] ,
+
+ [
+  a lv2:OutputPort, lv2:AudioPort ;
+  lv2:index 2 ;
+  lv2:name "Audio Out 1" ;
+  lv2:symbol "AUDIO_OUT_1" ;
+ ] ,
+ [
+  a lv2:OutputPort, lv2:AudioPort ;
+  lv2:index 3 ;
+  lv2:name "Audio Out 2" ;
+  lv2:symbol "AUDIO_OUT_2" ;
+ ] ,
+
+ [
+  a lv2:InputPort, lv2:ControlPort ;
+  lv2:index 4 ;
+  lv2:name "Input" ;
+  lv2:symbol "INPUT" ;
+  lv2:default 0 ;
+  lv2:minimum -12 ;
+  lv2:maximum 12 ;
+  unit:unit unit:db ;
+ ] ,
+ [
+  a lv2:InputPort, lv2:ControlPort ;
+  lv2:index 5 ;
+  lv2:name "Filter" ;
+  lv2:symbol "FILTER" ;
+  lv2:default 40 ;
+  lv2:minimum 40 ;
+  lv2:maximum 260 ;
+  lv2:scalePoint [ rdfs:label "Off"; rdf:value 40 ];
+ ] ,
+ [
+  a lv2:InputPort, lv2:ControlPort ;
+  lv2:index 6 ;
+  lv2:name "Threshold" ;
+  lv2:symbol "THRESHOLD" ;
+  lv2:default -10 ;
+  lv2:minimum -40 ;
+  lv2:maximum 0 ;
+  unit:unit unit:db ;
+ ] ,
+ [
+  a lv2:InputPort, lv2:ControlPort ;
+  lv2:index 7 ;
+  lv2:name "Knee" ;
+  lv2:symbol "KNEE" ;
+  lv2:default 1 ;
+  lv2:minimum 0 ;
+  lv2:maximum 1 ;
+  lv2:portProperty lv2:enumeration ;
+  lv2:scalePoint [ rdfs:label "Soft"; rdf:value 0 ],
+   [ rdfs:label "Hard"; rdf:value 1 ];
+ ] ,
+ [
+  a lv2:InputPort, lv2:ControlPort ;
+  lv2:index 8 ;
+  lv2:name "Attack" ;
+  lv2:symbol "ATTACK" ;
+  lv2:default 10 ;
+  lv2:minimum 1 ;
+  lv2:maximum 100 ;
+  unit:unit unit:ms ;
+ ] ,
+ [
+  a lv2:InputPort, lv2:ControlPort ;
+  lv2:index 9 ;
+  lv2:name "Atk Mode" ;
+  lv2:symbol "ATK_MODE" ;
+  lv2:default 0 ;
+  lv2:minimum 0 ;
+  lv2:maximum 1 ;
+  lv2:portProperty lv2:enumeration ;
+  lv2:scalePoint [ rdfs:label "Sigma"; rdf:value 0 ],
+   [ rdfs:label "Alpha"; rdf:value 1 ];
+ ] ,
+ [
+  a lv2:InputPort, lv2:ControlPort ;
+  lv2:index 10 ;
+  lv2:name "Release" ;
+  lv2:symbol "RELEASE" ;
+  lv2:default 100 ;
+  lv2:minimum 50 ;
+  lv2:maximum 1000 ;
+  unit:unit unit:ms ;
+ ] ,
+ [
+  a lv2:InputPort, lv2:ControlPort ;
+  lv2:index 11 ;
+  lv2:name "Ratio" ;
+  lv2:symbol "RATIO" ;
+  lv2:default 4.1 ;
+  lv2:minimum 1.1 ;
+  lv2:maximum 11 ;
+  lv2:portProperty lv2:enumeration ;
+  lv2:scalePoint [ rdfs:label "1.1:1"; rdf:value 1.1 ],
+   [ rdfs:label "1.2:1"; rdf:value 1.2 ],
+   [ rdfs:label "1.3:1"; rdf:value 1.3 ],
+   [ rdfs:label "1.4:1"; rdf:value 1.4 ],
+   [ rdfs:label "1.5:1"; rdf:value 1.5 ],
+   [ rdfs:label "1.6:1"; rdf:value 1.6 ],
+   [ rdfs:label "1.7:1"; rdf:value 1.7 ],
+   [ rdfs:label "1.8:1"; rdf:value 1.8 ],
+   [ rdfs:label "1.9:1"; rdf:value 1.9 ],
+   [ rdfs:label "2.0:1"; rdf:value 2.0 ],
+   [ rdfs:label "2.1:1"; rdf:value 2.1 ],
+   [ rdfs:label "2.2:1"; rdf:value 2.2 ],
+   [ rdfs:label "2.3:1"; rdf:value 2.3 ],
+   [ rdfs:label "2.4:1"; rdf:value 2.4 ],
+   [ rdfs:label "2.5:1"; rdf:value 2.5 ],
+   [ rdfs:label "2.6:1"; rdf:value 2.6 ],
+   [ rdfs:label "2.7:1"; rdf:value 2.7 ],
+   [ rdfs:label "2.8:1"; rdf:value 2.8 ],
+   [ rdfs:label "2.9:1"; rdf:value 2.9 ],
+   [ rdfs:label "3.0:1"; rdf:value 3.0 ],
+   [ rdfs:label "3.1:1"; rdf:value 3.1 ],
+   [ rdfs:label "3.2:1"; rdf:value 3.2 ],
+   [ rdfs:label "3.3:1"; rdf:value 3.3 ],
+   [ rdfs:label "3.4:1"; rdf:value 3.4 ],
+   [ rdfs:label "3.5:1"; rdf:value 3.5 ],
+   [ rdfs:label "3.6:1"; rdf:value 3.6 ],
+   [ rdfs:label "3.7:1"; rdf:value 3.7 ],
+   [ rdfs:label "3.8:1"; rdf:value 3.8 ],
+   [ rdfs:label "3.9:1"; rdf:value 3.9 ],
+   [ rdfs:label "4.0:1"; rdf:value 4.0 ],
+   [ rdfs:label "4.1:1"; rdf:value 4.1 ],
+   [ rdfs:label "4.2:1"; rdf:value 4.2 ],
+   [ rdfs:label "4.3:1"; rdf:value 4.3 ],
+   [ rdfs:label "4.4:1"; rdf:value 4.4 ],
+   [ rdfs:label "4.5:1"; rdf:value 4.5 ],
+   [ rdfs:label "4.6:1"; rdf:value 4.6 ],
+   [ rdfs:label "4.7:1"; rdf:value 4.7 ],
+   [ rdfs:label "4.8:1"; rdf:value 4.8 ],
+   [ rdfs:label "4.9:1"; rdf:value 4.9 ],
+   [ rdfs:label "5.0:1"; rdf:value 5.0 ],
+   [ rdfs:label "5.1:1"; rdf:value 5.1 ],
+   [ rdfs:label "5.2:1"; rdf:value 5.2 ],
+   [ rdfs:label "5.3:1"; rdf:value 5.3 ],
+   [ rdfs:label "5.4:1"; rdf:value 5.4 ],
+   [ rdfs:label "5.5:1"; rdf:value 5.5 ],
+   [ rdfs:label "5.6:1"; rdf:value 5.6 ],
+   [ rdfs:label "5.7:1"; rdf:value 5.7 ],
+   [ rdfs:label "5.8:1"; rdf:value 5.8 ],
+   [ rdfs:label "5.9:1"; rdf:value 5.9 ],
+   [ rdfs:label "6.0:1"; rdf:value 6.0 ],
+   [ rdfs:label "6.1:1"; rdf:value 6.1 ],
+   [ rdfs:label "6.2:1"; rdf:value 6.2 ],
+   [ rdfs:label "6.3:1"; rdf:value 6.3 ],
+   [ rdfs:label "6.4:1"; rdf:value 6.4 ],
+   [ rdfs:label "6.5:1"; rdf:value 6.5 ],
+   [ rdfs:label "6.6:1"; rdf:value 6.6 ],
+   [ rdfs:label "6.7:1"; rdf:value 6.7 ],
+   [ rdfs:label "6.8:1"; rdf:value 6.8 ],
+   [ rdfs:label "6.9:1"; rdf:value 6.9 ],
+   [ rdfs:label "7.0:1"; rdf:value 7.0 ],
+   [ rdfs:label "7.1:1"; rdf:value 7.1 ],
+   [ rdfs:label "7.2:1"; rdf:value 7.2 ],
+   [ rdfs:label "7.3:1"; rdf:value 7.3 ],
+   [ rdfs:label "7.4:1"; rdf:value 7.4 ],
+   [ rdfs:label "7.5:1"; rdf:value 7.5 ],
+   [ rdfs:label "7.6:1"; rdf:value 7.6 ],
+   [ rdfs:label "7.7:1"; rdf:value 7.7 ],
+   [ rdfs:label "7.8:1"; rdf:value 7.8 ],
+   [ rdfs:label "7.9:1"; rdf:value 7.9 ],
+   [ rdfs:label "8.0:1"; rdf:value 8.0 ],
+   [ rdfs:label "8.1:1"; rdf:value 8.1 ],
+   [ rdfs:label "8.2:1"; rdf:value 8.2 ],
+   [ rdfs:label "8.3:1"; rdf:value 8.3 ],
+   [ rdfs:label "8.4:1"; rdf:value 8.4 ],
+   [ rdfs:label "8.5:1"; rdf:value 8.5 ],
+   [ rdfs:label "8.6:1"; rdf:value 8.6 ],
+   [ rdfs:label "8.7:1"; rdf:value 8.7 ],
+   [ rdfs:label "8.8:1"; rdf:value 8.8 ],
+   [ rdfs:label "8.9:1"; rdf:value 8.9 ],
+   [ rdfs:label "9.0:1"; rdf:value 9.0 ],
+   [ rdfs:label "9.1:1"; rdf:value 9.1 ],
+   [ rdfs:label "9.2:1"; rdf:value 9.2 ],
+   [ rdfs:label "9.3:1"; rdf:value 9.3 ],
+   [ rdfs:label "9.4:1"; rdf:value 9.4 ],
+   [ rdfs:label "9.5:1"; rdf:value 9.5 ],
+   [ rdfs:label "9.6:1"; rdf:value 9.6 ],
+   [ rdfs:label "9.7:1"; rdf:value 9.7 ],
+   [ rdfs:label "9.8:1"; rdf:value 9.8 ],
+   [ rdfs:label "9.9:1"; rdf:value 9.9 ],
+   [ rdfs:label "10.0:1"; rdf:value 10.0 ],
+   [ rdfs:label "10.1:1"; rdf:value 10.1 ],
+   [ rdfs:label "10.2:1"; rdf:value 10.2 ],
+   [ rdfs:label "10.3:1"; rdf:value 10.3 ],
+   [ rdfs:label "10.4:1"; rdf:value 10.4 ],
+   [ rdfs:label "10.5:1"; rdf:value 10.5 ],
+   [ rdfs:label "10.6:1"; rdf:value 10.6 ],
+   [ rdfs:label "10.7:1"; rdf:value 10.7 ],
+   [ rdfs:label "10.8:1"; rdf:value 10.8 ],
+   [ rdfs:label "10.9:1"; rdf:value 10.9 ],
+   [ rdfs:label "inf"; rdf:value 11 ];
+ ] ,
+ [
+  a lv2:InputPort, lv2:ControlPort ;
+  lv2:index 12 ;
+  lv2:name "Makeup" ;
+  lv2:symbol "MAKEUP" ;
+  lv2:default 0 ;
+  lv2:minimum -12 ;
+  lv2:maximum 12 ;
+  unit:unit unit:db ;
+ ] ,
+ [
+  a lv2:InputPort, lv2:ControlPort ;
+  lv2:index 13 ;
+  lv2:name "Dry / Wet" ;
+  lv2:symbol "DRY_WET" ;
+  lv2:default 0 ;
+  lv2:minimum 0 ;
+  lv2:maximum 99 ;
+  unit:unit unit:pc ;
+ ] ,
+ [
+  a lv2:InputPort, lv2:ControlPort ;
+  lv2:index 14 ;
+  lv2:name "Stereo mode" ;
+  lv2:symbol "STEREO_MODE" ;
+  lv2:default 0 ;
+  lv2:minimum 0 ;
+  lv2:maximum 5 ;
+  lv2:portProperty lv2:enumeration ;
+  lv2:scalePoint [ rdfs:label "2 Mono"; rdf:value 1 ],
+   [ rdfs:label "R-S.chn"; rdf:value 2 ],
+   [ rdfs:label "Mid."; rdf:value 3 ],
+   [ rdfs:label "Side"; rdf:value 4 ],
+   [ rdfs:label "M/S"; rdf:value 5 ],
+   [ rdfs:label "Stereo"; rdf:value 0 ];
+ ].
