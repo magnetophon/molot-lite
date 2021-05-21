@@ -1,4 +1,5 @@
 CC=g++
+LD=$(CC)
 CFLAGS=-O
 INSTALL_DIR = /usr/local/lib/lv2
 ifndef ARCHNAME
