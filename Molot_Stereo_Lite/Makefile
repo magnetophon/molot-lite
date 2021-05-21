@@ -51,7 +51,7 @@ ladspa$(SOEXT): $(OBJECTS) ladspa$(OEXT)
 install:
 	mkdir -p $(INSTALL_DIR)/$(BUNDLE)
 	cp -f manifest.ttl $(INSTALL_DIR)/$(BUNDLE)/manifest.ttl
-	cp -f plugin.ttl $(INSTALL_DIR)/$(BUNDLE)/Molot_Stereo_Lite.ttl
+	cp -f Molot_Stereo_Lite.ttl $(INSTALL_DIR)/$(BUNDLE)/Molot_Stereo_Lite.ttl
 	cp -f $(COPYNAME).$(UNAME) $(INSTALL_DIR)/$(BUNDLE)/Molot_Stereo_Lite.so
 	chmod 775 $(INSTALL_DIR)/$(BUNDLE)/*.ttl
 
