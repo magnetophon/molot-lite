@@ -256,6 +256,7 @@ static const LV2_Descriptor  PluginDescriptor = {
 	cleanup,
 };
 
+__attribute__((visibility("default")))
 const LV2_Descriptor * ladspa_descriptor(unsigned long index)
 {
 	if (!index) return &PluginDescriptor;

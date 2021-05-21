@@ -1,6 +1,6 @@
 CC=g++
 LD=$(CC)
-CFLAGS=-O2 -g
+CFLAGS=-O2 -g -fvisibility=hidden
 INSTALL_DIR = /usr/local/lib/lv2
 ifndef ARCHNAME
 OEXT=.o
