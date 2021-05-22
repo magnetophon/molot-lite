@@ -1,5 +1,6 @@
 CC=g++
-CFLAGS=-O
+LD=$(CC)
+CFLAGS=-O2 -g -fvisibility=hidden
 INSTALL_DIR = /usr/local/lib/lv2
 ifndef ARCHNAME
 OEXT=.o
@@ -50,7 +51,7 @@ ladspa$(SOEXT): $(OBJECTS) ladspa$(OEXT)
 install:
 	mkdir -p $(INSTALL_DIR)/$(BUNDLE)
 	cp -f manifest.ttl $(INSTALL_DIR)/$(BUNDLE)/manifest.ttl
-	cp -f plugin.ttl $(INSTALL_DIR)/$(BUNDLE)/Molot_Stereo_Lite.ttl
+	cp -f Molot_Stereo_Lite.ttl $(INSTALL_DIR)/$(BUNDLE)/Molot_Stereo_Lite.ttl
 	cp -f $(COPYNAME).$(UNAME) $(INSTALL_DIR)/$(BUNDLE)/Molot_Stereo_Lite.so
 	chmod 775 $(INSTALL_DIR)/$(BUNDLE)/*.ttl
 
@@ -58,4 +59,4 @@ uninstall:
 	rm -rf $(INSTALL_DIR)/$(BUNDLE)
 
 clean:
-	rm -f *.o
+	rm -f *.o *.so

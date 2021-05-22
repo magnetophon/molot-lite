@@ -101,7 +101,7 @@ static const int					PortDescriptors[LV2_NUM_ALL_PORTS] = {
 
 static void run(LV2_Handle instance, unsigned long sampleFrames)
 {
-	register MolotStereoLite *	plugin;
+	MolotStereoLite *	plugin;
 
 	if ((plugin = static_cast<MolotStereoLite *> (instance)))
 	{
@@ -129,7 +129,7 @@ static void cleanup(LV2_Handle instance)
 	{
 		// Get rid of the MolotStereoLite
 		{
-		register MolotStereoLite * plugin;
+		MolotStereoLite * plugin;
 
 		plugin = static_cast<MolotStereoLite *> (instance);
 		delete plugin;
@@ -150,7 +150,7 @@ static void cleanup(LV2_Handle instance)
 
 static LV2_Handle instantiate(const LV2_Descriptor * descriptor, unsigned long rate)
 {
-	register MolotStereoLite *	plugin;
+	MolotStereoLite *	plugin;
 
 	// Create an instance of MolotStereoLite (defined in Molot_Stereo_Lite.h)
 	plugin = new (std::nothrow) MolotStereoLite((double)rate);
@@ -178,7 +178,7 @@ static LV2_Handle instantiate(const LV2_Descriptor * descriptor, unsigned long r
 
 static void activate(LV2_Handle instance)
 {
-	register MolotStereoLite *	plugin;
+	MolotStereoLite *	plugin;
 
 	if ((plugin = static_cast<MolotStereoLite *> (instance))) plugin->pluginActivate();
 }
@@ -196,7 +196,7 @@ static void activate(LV2_Handle instance)
 
 static void deActivate(LV2_Handle instance)
 {
-	register MolotStereoLite *	plugin;
+	MolotStereoLite *	plugin;
 
 	if ((plugin = static_cast<MolotStereoLite *> (instance))) plugin->pluginDeActivate();
 }
@@ -217,7 +217,7 @@ static void deActivate(LV2_Handle instance)
 
 static void connectPort(LV2_Handle instance, unsigned long port, void * hostData)
 {
-	register MolotStereoLite *	plugin;
+	MolotStereoLite *	plugin;
 
 	plugin = static_cast<MolotStereoLite *> (instance);
 	if (plugin && port < LV2_NUM_ALL_PORTS)
@@ -265,6 +265,7 @@ static const LV2_Descriptor  PluginDescriptor = {
 	cleanup,
 };
 
+__attribute__((visibility("default")))
 const LV2_Descriptor * ladspa_descriptor(unsigned long index)
 {
 	if (!index) return &PluginDescriptor;

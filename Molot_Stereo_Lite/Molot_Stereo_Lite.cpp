@@ -3,8 +3,8 @@
 
 void MolotStereoLite::UpdateParameters()
 {
-	register double			val;
-	register unsigned char	flag;
+	double			val;
+	unsigned char	flag;
 
 	flag = 0;
 	if ((val = (double)*Host.In[LV2_FILTER]) != Value[LV2_FILTER])
