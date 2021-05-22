@@ -4,6 +4,7 @@
 @prefix doap: <http://usefulinc.com/ns/doap#> .
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
 @prefix unit: <http://lv2plug.in/ns/extensions/units#> .
+@prefix epp: <http://lv2plug.in/ns/ext/port-props#> .
 
 <jeff:Molot_Mono_Lite>
  a lv2:Plugin, lv2:CompressorPlugin ;
@@ -241,6 +242,7 @@
   lv2:minimum 0 ;
   lv2:maximum 4 ;
   lv2:portProperty lv2:enumeration ;
+  lv2:portProperty epp:hasStrictBounds ;
   lv2:scalePoint [ rdfs:label "None"; rdf:value 0 ],
    [ rdfs:label "2x"; rdf:value 1 ],
    [ rdfs:label "4x"; rdf:value 2 ],
