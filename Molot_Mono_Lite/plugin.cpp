@@ -145,19 +145,33 @@ static void connectPort(LV2_Handle instance, uint32_t port, void * hostData)
 	plugin = static_cast<MolotMonoLite *> (instance);
 	if (plugin && port < LV2_NUM_ALL_PORTS)
 	{
-				if (port < LV2_NUM_AUDIO_INS)
-			plugin->Host.AudioIn[port] = (float *)hostData;
-		else
+		if (port < LV2_NUM_AUDIO_INS)
 		{
-			port -= LV2_NUM_AUDIO_INS;
-			if (port < LV2_NUM_AUDIO_OUTS)
-				plugin->Host.AudioOut[port] = (float *)hostData;
-			else
-			{
-				port -= LV2_NUM_AUDIO_OUTS;
-				plugin->Host.In[port] = (float *)hostData;
-			}
+			plugin->Host.AudioIn[port] = (float *)hostData;
+			return;
 		}
+		port -= LV2_NUM_AUDIO_INS;
+
+		if (port < LV2_NUM_AUDIO_OUTS)
+		{
+			plugin->Host.AudioOut[port] = (float *)hostData;
+			return;
+		}
+		port -= LV2_NUM_AUDIO_OUTS;
+
+		if (port < LV2_NUM_INS)
+		{
+			plugin->Host.In[port] = (float *)hostData;
+			return;
+		}
+		port -= LV2_NUM_INS;
+
+		if (port < LV2_NUM_OUTS)
+		{
+			plugin->Host.Out[port] = (float *)hostData;
+			return;
+		}
+		port -= LV2_NUM_OUTS;
 	}
 }
 

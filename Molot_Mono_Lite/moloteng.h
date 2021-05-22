@@ -198,6 +198,8 @@ class ChannelCompressor
 
 		bool					m_use_sidechain_flt;
 
+		double				m_gr;
+
 	private:
 		size_t				m_zero_samples;
 		bool					m_is_on;
@@ -228,6 +230,7 @@ class StereoCompressor
 		void		setEnvelopeK(double threshold, double knee, double ratio);
 		void		setGain(double gain, double dry_mix, double in_gain = 1.0);
 		void		setStereoMode(stereo_mode_t sl);
+		void		getGainReduction(double *g1, double *g2) const;
 
 		void		processSample(double x1, double x2, double *y1, double *y2);
 #ifdef MOLOT_LITE_QUAD
@@ -259,6 +262,7 @@ class MonoCompressor
 		void		setEnvelope(double sample_rate, double attack_s, double release_s, double sidechain_freq, bool sharp_mode);
 		void		setEnvelopeK(double threshold, double knee, double ratio);
 		void		setGain(double gain, double dry_mix, double in_gain = 1.0);
+		double	getGainReduction() const;
 		double	processSample(double);
 		void		reset();
 		bool		getClip(bool reset);

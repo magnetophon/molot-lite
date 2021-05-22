@@ -153,6 +153,9 @@ void MolotMonoLite::pluginRun()
 		AudioOut[0] += Count;
 		TotalCount -= Count;
 	}
+
+	double GainReduction = m_comp.getGainReduction();
+	*Host.Out[LV2_GAIN_REDUCTION] = (float)(20.0 * std::log10(GainReduction));
 }
 
 

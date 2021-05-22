@@ -26,13 +26,14 @@ typedef void * LV2_Handle;
 #define INDEX_MAKEUP_10
 #define INDEX_DRY_WET_11
 #define INDEX_OVERSAMPLING_12
+#define INDEX_GAIN_REDUCTION_13
 
 // Misc stuff for the skeleton code
 #define LV2_NUM_AUDIO_INS 1
 #define LV2_NUM_AUDIO_OUTS 1
 #define LV2_NUM_INS 11
-#define LV2_NUM_OUTS 0
-#define LV2_NUM_ALL_PORTS 13
+#define LV2_NUM_OUTS 1
+#define LV2_NUM_ALL_PORTS 14
 #define LV2_MIDI_OPTION 0
 #define LV2_STATE_OPTION 0
 #define LV2_EXT_OPTION 0
@@ -53,11 +54,15 @@ typedef void * LV2_Handle;
 #define LV2_DRY_WET 9
 #define LV2_OVERSAMPLING 10
 
+// Indexes for accessing struct MOLOT_MONO_LITE->Out[] array
+#define LV2_GAIN_REDUCTION 0
+
 // Your plugin struct that the host passes to your DSP functions
 typedef struct {
 	float *	AudioIn[LV2_NUM_AUDIO_INS];
 	float *	AudioOut[LV2_NUM_AUDIO_OUTS];
 	float *	In[LV2_NUM_INS];
+	float *	Out[LV2_NUM_OUTS];
 	uint32_t	Begin;
 	uint32_t	End;
 	float		SampleRate;
