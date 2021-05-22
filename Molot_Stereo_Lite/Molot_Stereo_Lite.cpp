@@ -118,6 +118,8 @@ void MolotStereoLite::UpdateParameters()
  */
 void MolotStereoLite::pluginRun()
 {
+	UpdateParameters();
+
 	while (Host.Begin < Host.End)
 	{
 		double	y1, y2;
