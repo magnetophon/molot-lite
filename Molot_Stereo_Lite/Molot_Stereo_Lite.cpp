@@ -27,13 +27,21 @@ void MolotStereoLite::UpdateParameters()
 		Value[LV2_RELEASE] = val;
 		flag = 1;
 	}
+	if ((val = (int)*Host.In[LV2_OVERSAMPLING]) != (int)Value[LV2_OVERSAMPLING])
+	{
+		Value[LV2_OVERSAMPLING] = val;
+		flag = 1;
+	}
 
 	if (flag)
-		m_comp.setEnvelope((double)Host.SampleRate,
+	{
+		m_comp.setEnvelope((double)Host.SampleRate * (1 << (int)Value[LV2_OVERSAMPLING]),
 											Value[LV2_ATTACK] / 1000.0,
 											Value[LV2_RELEASE] / 1000.0,
 											Value[LV2_FILTER] == 40.0 ? 0.0 : Value[LV2_FILTER],
 											Value[LV2_ATK_MODE]);  // sharp mode
+		m_oversampler->SetOverSampling((iplug::EFactor)(int)Value[LV2_OVERSAMPLING]);
+	}
 
 	flag = 0;
 	if ((val = (double)*Host.In[LV2_THRESHOLD]) != Value[LV2_THRESHOLD])
@@ -120,14 +128,40 @@ void MolotStereoLite::pluginRun()
 {
 	UpdateParameters();
 
-	while (Host.Begin < Host.End)
+	float* AudioIn[2] =
 	{
-		double	y1, y2;
+		Host.AudioIn[0] + Host.Begin,
+		Host.AudioIn[1] + Host.Begin,
+	};
+	float* AudioOut[2] =
+	{
+		Host.AudioOut[0] + Host.Begin,
+		Host.AudioOut[1] + Host.Begin,
+	};
 
-		m_comp.processSample((double)*(Host.AudioIn[0] + Host.Begin), (double)*(Host.AudioIn[1] + Host.Begin), &y1, &y2);
-		*(Host.AudioOut[0] + Host.Begin) = (float)y1;
-		*(Host.AudioOut[1] + Host.Begin) = (float)y2;
-		++Host.Begin;
+	uint32_t TotalCount = Host.End - Host.Begin;
+
+	while (TotalCount > 0)
+	{
+		uint32_t Count = (TotalCount < 512) ? TotalCount : 512;
+
+		m_oversampler->ProcessBlock(AudioIn, AudioOut, Count, 2, 2,
+			[this](float** OsIn, float** OsOut, uint32_t OsCount)
+			{
+				for (uint32_t i = 0; i < OsCount; ++i)
+				{
+					double	y1, y2;
+					m_comp.processSample((double)OsIn[0][i], (double)OsIn[1][i], &y1, &y2);
+					OsOut[0][i] = (float)y1;
+					OsOut[1][i] = (float)y2;
+				}
+			});
+
+		AudioIn[0] += Count;
+		AudioIn[1] += Count;
+		AudioOut[0] += Count;
+		AudioOut[1] += Count;
+		TotalCount -= Count;
 	}
 }
 
@@ -149,6 +183,7 @@ void MolotStereoLite::pluginRun()
 
 MolotStereoLite::MolotStereoLite(double sampleRate)
 {
+	m_oversampler = new iplug::OverSampler<float>(iplug::kNone, 2, 2);
 }
 
 
@@ -160,6 +195,7 @@ MolotStereoLite::MolotStereoLite(double sampleRate)
 
 MolotStereoLite::~MolotStereoLite(void)
 {
+	delete m_oversampler;
 }
 
 
