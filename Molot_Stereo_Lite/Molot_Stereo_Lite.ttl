@@ -6,9 +6,25 @@
 @prefix unit: <http://lv2plug.in/ns/extensions/units#> .
 @prefix epp: <http://lv2plug.in/ns/ext/port-props#> .
 
-<jeff:Molot_Stereo_Lite>
+<urn:magnetophon:Molot_Stereo_Lite>
  a lv2:Plugin, lv2:CompressorPlugin ;
  doap:name "Molot Stereo Lite" ;
+ doap:license <https://spdx.org/licenses/GPL-3.0-or-later> ;
+
+ doap:maintainer [
+    foaf:name "Bart Brouns" ;
+    foaf:homepage <https://magnetophon.nl/> ;
+ ] ;
+
+ doap:developer [
+    foaf:name "Vladislav Goncharov" ;
+    foaf:homepage <https://vladgsound.wordpress.com> ;
+ ] ;
+
+ rdfs:comment "Compressor Molot Lite Stereo" ;
+
+ lv2:minorVersion 1 ;
+ lv2:microVersion 1 ;
 
  lv2:optionalFeature lv2:hardRTCapable ;
 
@@ -276,4 +292,24 @@
    [ rdfs:label "4x"; rdf:value 2 ],
    [ rdfs:label "8x"; rdf:value 3 ],
    [ rdfs:label "16x"; rdf:value 4 ];
+ ] ,
+ [
+  a lv2:OutputPort, lv2:ControlPort ;
+  lv2:index 16 ;
+  lv2:name "Gain reduction 1" ;
+  lv2:symbol "GAIN_REDUCTION_1" ;
+  lv2:default 0 ;
+  lv2:minimum -40 ;
+  lv2:maximum 0 ;
+  unit:unit unit:db ;
+ ] ,
+ [
+  a lv2:OutputPort, lv2:ControlPort ;
+  lv2:index 17 ;
+  lv2:name "Gain reduction 2" ;
+  lv2:symbol "GAIN_REDUCTION_2" ;
+  lv2:default 0 ;
+  lv2:minimum -40 ;
+  lv2:maximum 0 ;
+  unit:unit unit:db ;
  ].

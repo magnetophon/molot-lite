@@ -729,7 +729,7 @@ double ChannelCompressor::postprocessSample(State *state)
 	x_dry = state->over;
 
 	// generate GR envelope by threshold & ratio
-	env_gr = m_envelope_k.processSample(state->env);
+	m_gr = env_gr = m_envelope_k.processSample(state->env);
 
 	// apply attack/release to env_gr
 	// reverse because GR curve is reverse: rotate around 1.0
@@ -763,6 +763,7 @@ void ChannelCompressor::reset()
 	m_sidechain_flt.reset();
 	m_sidechain_flt2.reset();
 	m_env_ar.reset(true);
+	m_gr = 0.0;
 }
 
 
@@ -909,6 +910,25 @@ void StereoCompressor::setGain(double gain, double dry_mix, double in_gain)
 void StereoCompressor::setStereoMode(stereo_mode_t sl)
 {
 	m_stereo_mode = sl;
+}
+
+void StereoCompressor::getGainReduction(double *g1, double *g2) const
+{
+	switch (m_stereo_mode)
+	{
+		case SL_2MONO:
+		case SL_STEREO:
+		case SL_MS:
+			*g1 = m_comp[0].m_gr;
+			*g2 = m_comp[1].m_gr;
+			break;
+		case SL_R_SCHN:
+		case SL_M:
+		case SL_S:
+			*g1 = m_comp[0].m_gr;
+			*g2 = 0.0;
+			break;
+	}
 }
 
 void StereoCompressor::processSample(double x1, double x2, double *y1, double *y2)
@@ -1337,6 +1357,11 @@ void MonoCompressor::setGain(double gain, double dry_mix, double in_gain)
 	m_comp.m_gain = gain * (1.0 - dry_mix);
 	m_comp.m_dry_mix_k = dry_mix;
 	m_comp.m_in_gain = in_gain;
+}
+
+double MonoCompressor::getGainReduction() const
+{
+	return m_comp.m_gr;
 }
 
 double MonoCompressor::processSample(double x1)

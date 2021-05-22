@@ -163,6 +163,11 @@ void MolotStereoLite::pluginRun()
 		AudioOut[1] += Count;
 		TotalCount -= Count;
 	}
+
+	double GainReduction[2];
+	m_comp.getGainReduction(&GainReduction[0], &GainReduction[1]);
+	*Host.Out[LV2_GAIN_REDUCTION_1] = (float)(20.0 * std::log10(GainReduction[0]));
+	*Host.Out[LV2_GAIN_REDUCTION_2] = (float)(20.0 * std::log10(GainReduction[1]));
 }
 
 
