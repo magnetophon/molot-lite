@@ -6,9 +6,25 @@
 @prefix unit: <http://lv2plug.in/ns/extensions/units#> .
 @prefix epp: <http://lv2plug.in/ns/ext/port-props#> .
 
-<jeff:Molot_Mono_Lite>
+<urn:magnetophon:Molot_Mono_Lite>
  a lv2:Plugin, lv2:CompressorPlugin ;
  doap:name "Molot_Mono_Lite" ;
+ doap:license <https://spdx.org/licenses/GPL-3.0-or-later> ;
+
+ doap:maintainer [
+    foaf:name "Bart Brouns" ;
+    foaf:homepage <https://magnetophon.nl/> ;
+ ] ;
+
+ doap:developer [
+    foaf:name "Vladislav Goncharov" ;
+    foaf:homepage <https://vladgsound.wordpress.com> ;
+ ] ;
+
+ rdfs:comment "Compressor Molot Lite Mono" ;
+
+ lv2:minorVersion 1 ;
+ lv2:microVersion 1 ;
 
  lv2:optionalFeature lv2:hardRTCapable ;
 

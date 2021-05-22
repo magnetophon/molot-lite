@@ -9,7 +9,7 @@ typedef void * LV2_Handle;
 #include <lv2/lv2plug.in/ns/lv2core/lv2.h>
 
 // URI strings
-#define URI_STRING "jeff:Molot_Stereo_Lite"
+#define URI_STRING "urn:magnetophon:Molot_Stereo_Lite"
 #endif
 
 // Port indexes
