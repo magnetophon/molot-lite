@@ -25,13 +25,14 @@ typedef void * LV2_Handle;
 #define INDEX_RATIO_9
 #define INDEX_MAKEUP_10
 #define INDEX_DRY_WET_11
+#define INDEX_OVERSAMPLING_12
 
 // Misc stuff for the skeleton code
 #define LV2_NUM_AUDIO_INS 1
 #define LV2_NUM_AUDIO_OUTS 1
-#define LV2_NUM_INS 10
+#define LV2_NUM_INS 11
 #define LV2_NUM_OUTS 0
-#define LV2_NUM_ALL_PORTS 12
+#define LV2_NUM_ALL_PORTS 13
 #define LV2_MIDI_OPTION 0
 #define LV2_STATE_OPTION 0
 #define LV2_EXT_OPTION 0
@@ -50,6 +51,7 @@ typedef void * LV2_Handle;
 #define LV2_RATIO 7
 #define LV2_MAKEUP 8
 #define LV2_DRY_WET 9
+#define LV2_OVERSAMPLING 10
 
 // Your plugin struct that the host passes to your DSP functions
 typedef struct {

@@ -1,6 +1,7 @@
 CC=g++
 LD=$(CC)
 CFLAGS=-O2 -g -fvisibility=hidden
+CPPFLAGS=-I../Thirdparty/iPlug2 -I../Thirdparty/hiir-1.33
 INSTALL_DIR = /usr/local/lib/lv2
 ifndef ARCHNAME
 OEXT=.o
@@ -31,19 +32,19 @@ OBJECTS=Molot_Stereo_Lite$(OEXT) moloteng$(OEXT)
 all: $(DLLNAME)$(SOEXT) ladspa$(SOEXT)
 
 Molot_Stereo_Lite$(OEXT): Molot_Stereo_Lite.cpp Molot_Stereo_Lite.h plugin.h
-	$(CC) $(ARCCFLAG) -Wall -fPIC $(CFLAGS) -o Molot_Stereo_Lite$(OEXT) -c Molot_Stereo_Lite.cpp
+	$(CC) $(ARCCFLAG) -Wall -fPIC $(CFLAGS) $(CPPFLAGS) -o Molot_Stereo_Lite$(OEXT) -c Molot_Stereo_Lite.cpp
 
 plugin$(OEXT): plugin.cpp Molot_Stereo_Lite.h plugin.h
-	$(CC) $(ARCCFLAG) -Wall -fPIC $(CFLAGS) -o plugin$(OEXT) -c plugin.cpp
+	$(CC) $(ARCCFLAG) -Wall -fPIC $(CFLAGS) $(CPPFLAGS) -o plugin$(OEXT) -c plugin.cpp
 
 moloteng$(OEXT): moloteng.cpp plugin.h Molot_Stereo_Lite.h moloteng.h
-	$(CC) $(ARCCFLAG) -Wall -fPIC $(CFLAGS) -o moloteng$(OEXT) -c moloteng.cpp
+	$(CC) $(ARCCFLAG) -Wall -fPIC $(CFLAGS) $(CPPFLAGS) -o moloteng$(OEXT) -c moloteng.cpp
 
 $(DLLNAME)$(SOEXT): $(OBJECTS) plugin$(OEXT)
 	$(LD) $(ARCLFLAG) -o $(DLLNAME)$(SOEXT) plugin$(OEXT) $(OBJECTS) -shared
 
 ladspa$(OEXT): ladspa.cpp Molot_Stereo_Lite.h plugin.h
-	$(CC) $(ARCCFLAG) -Wall -fPIC $(CFLAGS) -o ladspa$(OEXT) -c ladspa.cpp
+	$(CC) $(ARCCFLAG) -Wall -fPIC $(CFLAGS) $(CPPFLAGS) -o ladspa$(OEXT) -c ladspa.cpp
 
 ladspa$(SOEXT): $(OBJECTS) ladspa$(OEXT)
 	$(LD) $(ARCLFLAG) -o ladspa$(SOEXT) ladspa$(OEXT) $(OBJECTS) -shared

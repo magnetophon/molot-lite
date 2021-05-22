@@ -259,4 +259,19 @@
    [ rdfs:label "Side"; rdf:value 4 ],
    [ rdfs:label "M/S"; rdf:value 5 ],
    [ rdfs:label "Stereo"; rdf:value 0 ];
+ ] ,
+ [
+  a lv2:InputPort, lv2:ControlPort ;
+  lv2:index 15 ;
+  lv2:name "Oversampling" ;
+  lv2:symbol "OVERSAMPLING" ;
+  lv2:default 0 ;
+  lv2:minimum 0 ;
+  lv2:maximum 4 ;
+  lv2:portProperty lv2:enumeration ;
+  lv2:scalePoint [ rdfs:label "None"; rdf:value 0 ],
+   [ rdfs:label "2x"; rdf:value 1 ],
+   [ rdfs:label "4x"; rdf:value 2 ],
+   [ rdfs:label "8x"; rdf:value 3 ],
+   [ rdfs:label "16x"; rdf:value 4 ];
  ].

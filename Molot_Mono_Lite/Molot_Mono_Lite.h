@@ -1,5 +1,6 @@
 #include "plugin.h"
 #include "moloteng.h"
+#include "Oversampler.h"
 
 class MolotMonoLite
 {
@@ -15,6 +16,7 @@ public:
 private:
 	MonoCompressor		m_comp;
 	double				Value[LV2_NUM_INS];
+	iplug::OverSampler<float>* m_oversampler;
 
 	void UpdateParameters();
 };
