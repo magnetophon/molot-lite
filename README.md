@@ -57,7 +57,7 @@ http://vladgsound.wordpress.com
 vl-g@yandex.ru
 
 LV2/LADSPA version by Jeff Glatt, using the "LV2 Create" software.
-http://http://home.roadrunner.com/~jgglatt
+http://home.roadrunner.com/~jgglatt
 jgglatt@roadrunner.com
 
 Various improvements by Jean Pierre Cimalando
