@@ -1,7 +1,6 @@
 # Molot Lite
 
-A cut-down version of Molot, a compressor with a lot of color and character.
-https://www.tokyodawn.net/vladg-molot-compressor
+A cut-down version of [Molot](https://www.tokyodawn.net/vladg-molot-compressor), a compressor with a lot of color and character.
 
 There are mono and stereo versions, for LV2 and LADSPA.
 
@@ -52,6 +51,7 @@ make install -C Molot_Stereo_Lite
 - added oversampling
 - added gain reduction meters
 - added LV2 metadata
+- changed "Ratio" from a drop-down to a slider
 
 ## Copyright
 
