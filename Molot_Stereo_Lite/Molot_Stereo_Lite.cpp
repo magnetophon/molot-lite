@@ -60,7 +60,7 @@ void MolotStereoLite::UpdateParameters()
 		flag = 1;
 	}
 	if (flag)
-		m_comp.setEnvelopeK(DB_TO_K(Value[LV2_THRESHOLD]), Value[LV2_KNEE], Value[LV2_RATIO] == 11.0 ? 100 : Value[LV2_RATIO]);
+		m_comp.setEnvelopeK(DB_TO_K(Value[LV2_THRESHOLD]), Value[LV2_KNEE], Value[LV2_RATIO] >= 11.0 ? 100 : Value[LV2_RATIO]);
 
 	flag = 0;
 	if ((val = (double)*Host.In[LV2_MAKEUP]) != Value[LV2_MAKEUP])
