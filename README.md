@@ -29,7 +29,7 @@ The stereo version has 6 stereo modes:
 
 - `git`
 - `build-essential`
-- `lv2
+- `lv2`
 
 ## Build
 
