@@ -1,6 +1,6 @@
 # Molot Lite
 
-A cut-down version of Molot, compressor a compressor with a lot of color and character..
+A cut-down version of Molot, a compressor with a lot of color and character.
 https://www.tokyodawn.net/vladg-molot-compressor
 
 There are mono and stereo versions, for LV2 and LADSPA.
@@ -8,10 +8,13 @@ There are mono and stereo versions, for LV2 and LADSPA.
 ## Usage
 
 If the plugin is taxing your CPU too much, reduce or turn off oversampling.
+
 The input gain affects the amount of distortion.
+
 There are two attack modes:
 - Sigma: accentuates the transients.
 - Alpha: is smoother.
+
 The stereo version has 6 stereo modes:
 - Stereo: The average of the gain reduction of left and right is applied to both channels.
 - 2 Mono: Two separate un-linked channels.
