@@ -26,12 +26,21 @@ The stereo version has 6 stereo modes:
   A mid-side encoder, both channels going trough the compressor, followed by a MS decoder.
   The maximum GR of either channel is applied to both channels.
 
+Oversampling incurs the following latency:  
+0x  -> 0 samples  
+2x  -> 4 samples  
+4x  -> 5 samples  
+8x  -> 5 samples  
+16x -> 5 samples  
+
 
 ## Dependencies
 
 - `git`
 - `build-essential`
 - `lv2`
+- `pkg-config`
+- `cairo`
 
 ## Build
 
@@ -44,6 +53,9 @@ make install -C Molot_Stereo_Lite
 ```
 
 ## Change Log
+
+### Version 1.1.0
+- added inline display
 
 ### Version 1.0.0
 - imported the original source code
