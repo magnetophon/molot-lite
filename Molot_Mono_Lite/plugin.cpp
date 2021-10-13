@@ -285,7 +285,7 @@ render (LV2_Handle instance, uint32_t w, uint32_t max_h)
 	{
 		double rh = (ymax - ymin) / channels;
 		double ys = (channels > 1) ? 0.1 * rh : 0.0;
-		double x1 = v2x (plugin->Host.DisplayLevel[chan]);
+		double x1 = std::max (xmin, v2x (plugin->Host.DisplayLevel[chan]));
 		double x2 = v2x (xmax);
 		cairo_rectangle (cr, x1, ymin + chan * rh + ys, x2 - x1, rh - 2 * ys);
 		cairo_fill (cr);
