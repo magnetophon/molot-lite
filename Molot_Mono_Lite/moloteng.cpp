@@ -912,7 +912,7 @@ void StereoCompressor::setStereoMode(stereo_mode_t sl)
 	m_stereo_mode = sl;
 }
 
-void StereoCompressor::getGainReduction(double *g1, double *g2) const
+int StereoCompressor::getGainReduction(double *g1, double *g2) const
 {
 	switch (m_stereo_mode)
 	{
@@ -921,13 +921,17 @@ void StereoCompressor::getGainReduction(double *g1, double *g2) const
 		case SL_MS:
 			*g1 = m_comp[0].m_gr;
 			*g2 = m_comp[1].m_gr;
-			break;
+			return 2;
 		case SL_R_SCHN:
 		case SL_M:
 		case SL_S:
 			*g1 = m_comp[0].m_gr;
 			*g2 = 0.0;
-			break;
+			return 1;
+		default:
+			*g1 = 0.0;
+			*g2 = 0.0;
+			return 0;
 	}
 }
 

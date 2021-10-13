@@ -7,6 +7,10 @@
 typedef void * LV2_Handle;
 #else
 #include <lv2/lv2plug.in/ns/lv2core/lv2.h>
+#include <lv2_rgext.h>
+#if I_AM_LADSPA != 1
+#include <cairo.h>
+#endif
 
 // URI strings
 #define URI_STRING "urn:magnetophon:Molot_Stereo_Lite"
@@ -72,4 +76,12 @@ typedef struct {
 	uint32_t	Begin;
 	uint32_t	End;
 	float		SampleRate;
+#if I_AM_LADSPA != 1
+	int	DisplayChannels;
+	float	DisplayLevel[2];
+	cairo_surface_t *	CairoSurface;
+	cairo_pattern_t *	CairoPattern;
+	LV2_Inline_Display *	QueueDraw;
+	LV2_Inline_Display_Image_Surface	DisplaySurface;
+#endif
 } MOLOT_STEREO_LITE ;

@@ -155,7 +155,19 @@ void MolotMonoLite::pluginRun()
 	}
 
 	double GainReduction = m_comp.getGainReduction();
+	int GainReductionChannels = 1;
 	*Host.Out[LV2_GAIN_REDUCTION] = (float)(20.0 * std::log10(GainReduction));
+
+	if (Host.QueueDraw)
+	{
+		if (Host.DisplayChannels != GainReductionChannels ||
+			Host.DisplayLevel[0] != *Host.Out[LV2_GAIN_REDUCTION])
+		{
+			Host.DisplayChannels = GainReductionChannels;
+			Host.DisplayLevel[0] = *Host.Out[LV2_GAIN_REDUCTION];
+			Host.QueueDraw->queue_draw(Host.QueueDraw->handle);
+		}
+	}
 }
 
 

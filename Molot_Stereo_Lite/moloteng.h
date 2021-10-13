@@ -230,7 +230,7 @@ class StereoCompressor
 		void		setEnvelopeK(double threshold, double knee, double ratio);
 		void		setGain(double gain, double dry_mix, double in_gain = 1.0);
 		void		setStereoMode(stereo_mode_t sl);
-		void		getGainReduction(double *g1, double *g2) const;
+		int		getGainReduction(double *g1, double *g2) const;
 
 		void		processSample(double x1, double x2, double *y1, double *y2);
 #ifdef MOLOT_LITE_QUAD
