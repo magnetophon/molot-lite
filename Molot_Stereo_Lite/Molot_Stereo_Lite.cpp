@@ -165,9 +165,22 @@ void MolotStereoLite::pluginRun()
 	}
 
 	double GainReduction[2];
-	m_comp.getGainReduction(&GainReduction[0], &GainReduction[1]);
+	int GainReductionChannels = m_comp.getGainReduction(&GainReduction[0], &GainReduction[1]);
 	*Host.Out[LV2_GAIN_REDUCTION_1] = (float)(20.0 * std::log10(GainReduction[0]));
 	*Host.Out[LV2_GAIN_REDUCTION_2] = (float)(20.0 * std::log10(GainReduction[1]));
+
+	if (Host.QueueDraw)
+	{
+		if (Host.DisplayChannels != GainReductionChannels ||
+			Host.DisplayLevel[0] != *Host.Out[LV2_GAIN_REDUCTION_1] ||
+			Host.DisplayLevel[1] != *Host.Out[LV2_GAIN_REDUCTION_2])
+		{
+			Host.DisplayChannels = GainReductionChannels;
+			Host.DisplayLevel[0] = *Host.Out[LV2_GAIN_REDUCTION_1];
+			Host.DisplayLevel[1] = *Host.Out[LV2_GAIN_REDUCTION_2];
+			Host.QueueDraw->queue_draw(Host.QueueDraw->handle);
+		}
+	}
 }
 
 

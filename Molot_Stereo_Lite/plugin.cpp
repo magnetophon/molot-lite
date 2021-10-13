@@ -1,4 +1,6 @@
 #include <new>
+#include <algorithm>
+#include <cmath>
 #include "Molot_Stereo_Lite.h"
 
 #define SIZEOF_URI_STRING 22
@@ -55,6 +57,12 @@ static void cleanup(LV2_Handle instance)
 		MolotStereoLite * plugin;
 
 		plugin = static_cast<MolotStereoLite *> (instance);
+
+		if (plugin->Host.CairoSurface)
+			cairo_surface_destroy (plugin->Host.CairoSurface);
+		if (plugin->Host.CairoPattern)
+			cairo_pattern_destroy (plugin->Host.CairoPattern);
+
 		delete plugin;
 		}
 	}
@@ -82,6 +90,21 @@ static LV2_Handle instantiate(const LV2_Descriptor * descriptor, double rate, co
 		plugin->Host.SampleRate = (float)rate;
 
 	}
+
+	plugin->Host.QueueDraw = nullptr;
+
+	for (size_t i = 0; features[i]; ++i)
+	{
+		if (!strcmp (features[i]->URI, LV2_INLINEDISPLAY__queue_draw))
+			plugin->Host.QueueDraw = (LV2_Inline_Display *)features[i]->data;
+	}
+
+	plugin->Host.DisplayChannels = 0;
+	plugin->Host.DisplayLevel[0] = 0.0f;
+	plugin->Host.DisplayLevel[1] = 0.0f;
+
+	plugin->Host.CairoSurface = nullptr;
+	plugin->Host.CairoPattern = nullptr;
 
 	// Return our MolotStereoLite to the host (and the
 	// host passes back to our functions)
@@ -179,6 +202,125 @@ static void connectPort(LV2_Handle instance, uint32_t port, void * hostData)
 
 
 
+/********************* render() **********************
+ */
+static LV2_Inline_Display_Image_Surface *
+render (LV2_Handle instance, uint32_t w, uint32_t max_h)
+{
+	MolotStereoLite *	plugin;
+	LV2_Inline_Display_Image_Surface *	surface;
+	cairo_surface_t *	cs;
+
+	plugin = static_cast<MolotStereoLite *> (instance);
+	surface = &plugin->Host.DisplaySurface;
+	cs = plugin->Host.CairoSurface;
+
+	uint32_t h = std::max (11u, std::min (1u | (uint32_t)std::ceil (w / 10.), max_h));
+
+	if (!cs ||
+		(uint32_t)cairo_image_surface_get_width(cs) != w ||
+		(uint32_t)cairo_image_surface_get_height(cs) != h)
+	{
+		if (cs)
+			cairo_surface_destroy(cs);
+		cs = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, w, h);
+		plugin->Host.CairoSurface = cs;
+		if (plugin->Host.CairoPattern)
+		{
+			cairo_pattern_destroy (plugin->Host.CairoPattern);
+			plugin->Host.CairoPattern = nullptr;
+		}
+	}
+
+	double xmin = std::floor (w * 0.05);
+	double xmax = std::ceil (w * 0.95);
+	double ymin = 2.0;
+	double ymax = h - 2.0;
+	double vmin = -40.0;
+	double vmax = 0.0;
+	auto v2p = [vmin, vmax](double v) -> double
+	{
+		return (v - vmin) / (vmax - vmin);
+	};
+	auto v2x = [xmin, xmax, v2p](double v) -> double
+	{
+		return xmin + v2p(v) * (xmax - xmin);
+	};
+
+	if (!plugin->Host.CairoPattern)
+	{
+		cairo_pattern_t* pat = cairo_pattern_create_linear (0.0, 0.0, w, 0);
+
+		cairo_pattern_add_color_stop_rgba (pat, 1.0, .7, .7, .0, 0);
+		cairo_pattern_add_color_stop_rgba (pat, 0.9 * v2p (-0.0), .7, .7, .0, 1);
+		cairo_pattern_add_color_stop_rgba (pat, 0.9 * v2p (-10.0), .7, .7, .0, 1);
+		cairo_pattern_add_color_stop_rgba (pat, 0.9 * v2p (-40.0), .9, .0, .0, 1);
+		cairo_pattern_add_color_stop_rgba (pat, 0.0, .9, .0, .0, 0);
+
+		plugin->Host.CairoPattern = pat;
+	}
+
+	cairo_t*	cr = cairo_create (cs);
+	cairo_rectangle (cr, 0, 0, w, h);
+	cairo_set_source_rgba (cr, .2, .2, .2, 1.0);
+	cairo_fill (cr);
+
+	cairo_set_line_width (cr, 1);
+	cairo_set_source_rgba (cr, 0.8, 0.8, 0.8, 1.0);
+	cairo_new_path (cr);
+	for (double value : {0.0, -10.0, -20.0, -30.0, -40.0})
+	{
+		double x = std::round (v2x (value)) - 0.5;
+		cairo_move_to (cr, x, 0);
+		cairo_line_to (cr, x, h);
+	}
+	cairo_stroke (cr);
+
+	cairo_rectangle (cr, xmin, ymin, xmax - xmin, ymax - ymin);
+	cairo_set_source_rgba (cr, 0.5, 0.5, 0.5, 0.6);
+	cairo_fill (cr);
+
+	const int channels = plugin->Host.DisplayChannels;
+	cairo_set_source (cr, plugin->Host.CairoPattern);
+	for (int chan = 0; chan < channels; ++chan)
+	{
+		double rh = (ymax - ymin) / channels;
+		double ys = (channels > 1) ? 0.1 * rh : 0.0;
+		double x1 = std::max (xmin, v2x (plugin->Host.DisplayLevel[chan]));
+		double x2 = v2x (xmax);
+		cairo_rectangle (cr, x1, ymin + chan * rh + ys, x2 - x1, rh - 2 * ys);
+		cairo_fill (cr);
+	}
+
+	cairo_destroy (cr);
+	cairo_surface_flush (cs);
+	surface->width  = cairo_image_surface_get_width (cs);
+	surface->height = cairo_image_surface_get_height (cs);
+	surface->stride = cairo_image_surface_get_stride (cs);
+	surface->data   = cairo_image_surface_get_data (cs);
+	return surface;
+}
+
+
+
+
+
+/********************* extensionData() **********************
+ */
+static const void * extensionData(const char * uri)
+{
+	if (!strcmp (uri, LV2_INLINEDISPLAY__interface))
+	{
+		static const LV2_Inline_Display_Interface display = { render };
+		return &display;
+	}
+	return nullptr;
+}
+
+
+
+
+
 /********************* lv2_descriptor() **********************
  * Returns a pointer to our LV2_Descriptor struct at the
  * requested index.
@@ -202,7 +344,7 @@ static const LV2_Descriptor PluginDescriptor = {
 	run,
 	deActivate,
 	cleanup,
-	NULL};
+	&extensionData};
 
 LV2_SYMBOL_EXPORT const LV2_Descriptor * lv2_descriptor(uint32_t index)
 {

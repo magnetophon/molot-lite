@@ -1,7 +1,9 @@
 CC=g++
 LD=$(CC)
 CFLAGS=-O2 -g -fvisibility=hidden
-CPPFLAGS=-I../Thirdparty/iPlug2 -I../Thirdparty/hiir-1.33
+CPPFLAGS=-I../Thirdparty/iPlug2 -I../Thirdparty/hiir-1.33 -I../Thirdparty/x42 $(CAIRO_CPPFLAGS)
+CAIRO_CPPFLAGS=$(shell pkg-config cairo --cflags)
+CAIRO_LDFLAGS=$(shell pkg-config cairo --libs)
 INSTALL_DIR = /usr/local/lib/lv2
 ifndef ARCHNAME
 OEXT=.o
@@ -41,7 +43,7 @@ moloteng$(OEXT): moloteng.cpp plugin.h Molot_Stereo_Lite.h moloteng.h
 	$(CC) $(ARCCFLAG) -Wall -fPIC $(CFLAGS) $(CPPFLAGS) -o moloteng$(OEXT) -c moloteng.cpp
 
 $(DLLNAME)$(SOEXT): $(OBJECTS) plugin$(OEXT)
-	$(LD) $(ARCLFLAG) -o $(DLLNAME)$(SOEXT) plugin$(OEXT) $(OBJECTS) -shared
+	$(LD) $(ARCLFLAG) -o $(DLLNAME)$(SOEXT) plugin$(OEXT) $(OBJECTS) $(CAIRO_LDFLAGS) -shared
 
 ladspa$(OEXT): ladspa.cpp Molot_Stereo_Lite.h plugin.h
 	$(CC) $(ARCCFLAG) -Wall -fPIC $(CFLAGS) $(CPPFLAGS) -o ladspa$(OEXT) -c ladspa.cpp
