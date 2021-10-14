@@ -27,7 +27,7 @@ The stereo version has 6 stereo modes:
   The maximum GR of either channel is applied to both channels.
 
 Oversampling incurs the following latency:  
-0x  -> 0 samples  
+1x  -> 0 samples  
 2x  -> 4 samples  
 4x  -> 5 samples  
 8x  -> 5 samples  
